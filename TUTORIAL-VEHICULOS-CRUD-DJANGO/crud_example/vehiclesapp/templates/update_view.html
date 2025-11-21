@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Actualizar Vehículo - {{ form.instance.placa }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>Errores en el formulario:</strong>
+        <ul>
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+            <li>{{ field }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    
+    <div class="form-group">
+        {{ form.placa.label_tag }}
+        {{ form.placa }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.marca.label_tag }}
+        {{ form.marca }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.modelo.label_tag }}
+        {{ form.modelo }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.color.label_tag }}  
+        {{ form.color }}  
+    </div>
+    
+    <input type="submit" value="Guardar" class="btn btn-primary">
+    <a href="{% url 'list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+
+{% endblock %}

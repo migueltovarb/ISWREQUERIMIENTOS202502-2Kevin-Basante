@@ -1,0 +1,49 @@
+# Django
+*.pyc
+*__pycache__/
+db.sqlite3
+migrations/
+
+# Entornos virtuales
+env/
+venv/
+ENV/
+.env
+.venv
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Python
+*.egg-info/
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Archivos de base de datos
+*.db
+*.sqlite3
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de medios y estáticos (en desarrollo)
+media/
+staticfiles/
+
+# Archivos de entorno
+.env.local
+.env.production
+*.env

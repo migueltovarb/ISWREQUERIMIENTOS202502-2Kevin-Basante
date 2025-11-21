@@ -1,0 +1,128 @@
+<!-- list_view.html -->
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .vehicle-container {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    
+    .vehicle-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    .add-button {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        line-height: 28px;
+        font-size: 24px;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+    
+    .add-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .vehicle-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .vehicle-table thead {
+        background-color: #3d4449;
+    }
+    
+    .vehicle-table thead th {
+        padding: 15px;
+        text-align: left;
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .vehicle-table tbody tr {
+        background-color: #f8f9fa;
+    }
+    
+    .vehicle-table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+    
+    .vehicle-table tbody td {
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        color: #333;
+        font-size: 15px;
+    }
+    
+    .action-icons {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .action-icons a {
+        color: #007bff;
+        font-size: 18px;
+        text-decoration: none;
+    }
+    
+    .action-icons a:hover {
+        color: #0056b3;
+    }
+    
+    .edit-icon::before {
+        content: "📝";
+    }
+    
+    .delete-icon::before {
+        content: "🗑️";
+    }
+</style>
+
+<div class="vehicle-container">
+    <h1 class="vehicle-title">Vehículos</h1>
+    
+    <a href="{% url 'create' %}" class="add-button">+</a>
+    
+    <table class="vehicle-table">
+        <thead>
+            <tr>
+                <th>Placa</th>
+                <th>Marca</th>
+                <th>Color</th>
+                <th>Modelo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle.placa }}</td>
+                <td>{{ vehicle.marca }}</td>
+                <td>{{ vehicle.get_color_display }}</td>
+                <td>{{ vehicle.modelo }}</td>
+                <td>
+                    <div class="action-icons">
+                        <a href="{% url 'update' vehicle.id %}" class="edit-icon" title="Editar"></a>
+                        <a href="{% url 'delete' vehicle.id %}" class="delete-icon" title="Eliminar"></a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
