@@ -1,0 +1,100 @@
+{% extends 'gastos_app/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Agregar Gasto - {% if cuenta_actual == '1' %}Cuenta 1{% elif cuenta_actual == '2' %}Cuenta 2{% else %}Invitado{% endif %}</h1>
+</div>
+
+<div class="content">
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button style="flex: 1; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px;">
+            Gasto
+        </button>
+        <button style="flex: 1; padding: 12px; background: #f8f9fa; color: #333; border: 1px solid #ddd; border-radius: 8px;"
+                onclick="window.location.href='{% url 'agregar_ingreso' %}?cuenta={{ cuenta_actual }}'">
+            Ingresos
+        </button>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+        <button type="button" onclick="seleccionarCategoria('COMPRAS')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Compras
+        </button>
+        <button type="button" onclick="seleccionarCategoria('ALIMENTOS')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Alimentos
+        </button>
+        <button type="button" onclick="seleccionarCategoria('TELEFONO')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Teléfono
+        </button>
+        <button type="button" onclick="seleccionarCategoria('EDUCACION')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Educación
+        </button>
+        <button type="button" onclick="seleccionarCategoria('BELLEZA')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Belleza
+        </button>
+        <button type="button" onclick="seleccionarCategoria('ENTRENAMIENTO')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Entrenamiento
+        </button>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="categoria" id="categoria" value="COMPRAS" required>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nota:</label>
+            <input type="text" name="nota" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" 
+                   placeholder="Agregar una nota" required maxlength="50">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Valor:</label>
+            <input type="number" name="valor" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" 
+                   placeholder="0" required min="1" max="9999999999">
+        </div>
+        
+        <button type="submit" style="width: 100%; padding: 15px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 16px;">
+            Agregar Gasto
+        </button>
+    </form>
+</div>
+
+<script>
+function seleccionarCategoria(categoria) {
+    document.getElementById('categoria').value = categoria;
+    // Resaltar el botón seleccionado
+    document.querySelectorAll('button[type="button"]').forEach(btn => {
+        btn.style.background = '#f8f9fa';
+        btn.style.color = '#333';
+    });
+    event.target.style.background = '#667eea';
+    event.target.style.color = 'white';
+}
+
+// Seleccionar "Compras" por defecto al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    seleccionarCategoria('COMPRAS');
+});
+</script>
+{% endblock %}
+
+{% block bottom_nav %}
+<nav class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='{% url 'inicio' %}?cuenta={{ cuenta_actual }}'">
+        <div>🏠</div>
+        <div>Inicio</div>
+    </div>
+    <div class="nav-item">
+        <div>📊</div>
+        <div>Gráficos</div>
+    </div>
+    <div class="nav-item">
+        <div>💰</div>
+        <div>Presupuesto</div>
+    </div>
+    <div class="nav-item">
+        <div>👤</div>
+        <div>Yo</div>
+    </div>
+</nav>
+{% endblock %}

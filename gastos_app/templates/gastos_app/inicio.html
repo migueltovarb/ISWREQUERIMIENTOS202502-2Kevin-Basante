@@ -1,0 +1,85 @@
+{% extends 'gastos_app/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Mis Gastos - {{ nombre_cuenta }}</h1>
+    <button onclick="window.location.href='{% url 'volver_login' %}'" 
+            style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; margin-top: 10px;">
+        Cambiar Cuenta
+    </button>
+    <div style="margin-top: 15px;">
+        <div style="display: flex; justify-content: space-between; font-size: 14px;">
+            <div>
+                <div>2025 Nov</div>
+                <div>Gastos ${{ total_gastos|floatformat:0 }}</div>
+            </div>
+            <div>
+                <div>Ingresos ${{ total_ingresos|floatformat:0 }}</div>
+                <div>Saldo ${{ saldo|floatformat:0 }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    {% for movimiento in movimientos %}
+    <div style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid {% if movimiento.tipo == 'GASTO' %}#e74c3c{% else %}#2ecc71{% endif %};">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1;">
+                <div style="font-weight: bold;">{{ movimiento.nota }}</div>
+                <div style="color: #666; font-size: 12px;">{{ movimiento.get_categoria_display }}</div>
+                <div style="color: #999; font-size: 10px;">{{ movimiento.fecha|date:"d M Y H:i" }}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="color: {% if movimiento.tipo == 'GASTO' %}#e74c3c{% else %}#2ecc71{% endif %}; font-weight: bold;">
+                    {% if movimiento.tipo == 'GASTO' %}-{% endif %}${{ movimiento.valor|floatformat:0 }}
+                </div>
+                <form method="post" action="{% url 'eliminar_movimiento' movimiento.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('¿Estás seguro de que quieres eliminar este movimiento?')" 
+                            style="background: #e74c3c; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
+                        ×
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; color: #666; padding: 40px 0;">
+        No hay movimientos registrados en {{ nombre_cuenta }}
+    </div>
+    {% endfor %}
+
+    <div style="text-align: center; color: #666; padding: 20px 0;">
+        <div>---</div>
+        <div style="margin-top: 10px;"><strong>Detalles del registro aparecerán aquí</strong></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottom_nav %}
+<nav class="bottom-nav">
+    <div class="nav-item active">
+        <div>🏠</div>
+        <div>Inicio</div>
+    </div>
+    <div class="nav-item">
+        <div>📊</div>
+        <div>Gráficos</div>
+    </div>
+    <div class="nav-item">
+        <div>💰</div>
+        <div>Presupuesto</div>
+    </div>
+    <div class="nav-item">
+        <div>👤</div>
+        <div>Yo</div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block add_button %}
+<div class="add-button" onclick="window.location.href='{% url 'agregar_gasto' %}?cuenta={{ cuenta_actual }}'">
+    +
+</div>
+{% endblock %}

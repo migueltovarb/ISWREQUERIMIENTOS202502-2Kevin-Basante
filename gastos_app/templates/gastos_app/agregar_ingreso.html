@@ -1,0 +1,91 @@
+{% extends 'gastos_app/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Agregar Ingreso - {% if cuenta_actual == '1' %}Cuenta 1{% elif cuenta_actual == '2' %}Cuenta 2{% else %}Invitado{% endif %}</h1>
+</div>
+
+<div class="content">
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button style="flex: 1; padding: 12px; background: #f8f9fa; color: #333; border: 1px solid #ddd; border-radius: 8px;"
+                onclick="window.location.href='{% url 'agregar_gasto' %}?cuenta={{ cuenta_actual }}'">
+            Gasto
+        </button>
+        <button style="flex: 1; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px;">
+            Ingresos
+        </button>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px;">
+        <button type="button" onclick="seleccionarCategoria('SALARIO')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Salario
+        </button>
+        <button type="button" onclick="seleccionarCategoria('INVERSIONES')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Inversiones
+        </button>
+        <button type="button" onclick="seleccionarCategoria('MEDIO_TIEMPO')" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+            Medio tiempo
+        </button>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="categoria" id="categoria" value="SALARIO" required>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nota:</label>
+            <input type="text" name="nota" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" 
+                   placeholder="Agregar una nota" required maxlength="50">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Valor:</label>
+            <input type="number" name="valor" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" 
+                   placeholder="0" required min="1" max="9999999999">
+        </div>
+        
+        <button type="submit" style="width: 100%; padding: 15px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-size: 16px;">
+            Agregar Ingreso
+        </button>
+    </form>
+</div>
+
+<script>
+function seleccionarCategoria(categoria) {
+    document.getElementById('categoria').value = categoria;
+    // Resaltar el botón seleccionado
+    document.querySelectorAll('button[type="button"]').forEach(btn => {
+        btn.style.background = '#f8f9fa';
+        btn.style.color = '#333';
+    });
+    event.target.style.background = '#2ecc71';
+    event.target.style.color = 'white';
+}
+
+// Seleccionar "Salario" por defecto al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    seleccionarCategoria('SALARIO');
+});
+</script>
+{% endblock %}
+
+{% block bottom_nav %}
+<nav class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='{% url 'inicio' %}?cuenta={{ cuenta_actual }}'">
+        <div>🏠</div>
+        <div>Inicio</div>
+    </div>
+    <div class="nav-item">
+        <div>📊</div>
+        <div>Gráficos</div>
+    </div>
+    <div class="nav-item">
+        <div>💰</div>
+        <div>Presupuesto</div>
+    </div>
+    <div class="nav-item">
+        <div>👤</div>
+        <div>Yo</div>
+    </div>
+</nav>
+{% endblock %}

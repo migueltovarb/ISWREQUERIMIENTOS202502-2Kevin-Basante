@@ -1,0 +1,83 @@
+{% extends 'gastos_app/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Mis Gastos</h1>
+</div>
+
+<div class="content">
+    <p style="text-align: center; margin-bottom: 20px;">
+        Después de iniciar sesión puede respaldar sus datos
+    </p>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+            <input type="checkbox" id="google_login" onchange="toggleCuentas()">
+            <span>Iniciar sesión con Google</span>
+        </label>
+    </div>
+    
+    <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin-bottom: 20px; cursor: pointer;" 
+         onclick="window.location.href='{% url 'inicio' %}?cuenta=invitado'">
+        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+            <!--<input type="checkbox" checked readonly style="pointer-events: none;">-->
+            <strong>Modo invitado</strong>
+        </label>
+    </div>
+    
+    <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+        <h3 style="text-align: center; margin-bottom: 15px;">Elige una cuenta</h3>
+        
+        <div style="margin-bottom: 15px;">
+            <div id="cuenta1" style="padding: 10px; border-bottom: 1px solid #eee; color: #999; cursor: not-allowed;">
+                <strong>Cuenta 1</strong>
+            </div>
+            <div id="cuenta2" style="padding: 10px; color: #999; cursor: not-allowed;">
+                <strong>Cuenta 2</strong>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="#" style="color: #667eea; text-decoration: none; display: block; margin-bottom: 10px;">
+                ¿Olvido su contraseña?
+            </a>
+            <a href="#" style="color: #667eea; text-decoration: none;">
+                Regístrese aquí
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleCuentas() {
+    const googleLogin = document.getElementById('google_login');
+    const cuenta1 = document.getElementById('cuenta1');
+    const cuenta2 = document.getElementById('cuenta2');
+    
+    if (googleLogin.checked) {
+        // Habilitar cuentas
+        cuenta1.style.color = '#000';
+        cuenta1.style.cursor = 'pointer';
+        cuenta1.onclick = function() { window.location.href = "{% url 'inicio' %}?cuenta=1"; };
+        
+        cuenta2.style.color = '#000';
+        cuenta2.style.cursor = 'pointer';
+        cuenta2.onclick = function() { window.location.href = "{% url 'inicio' %}?cuenta=2"; };
+    } else {
+        // Deshabilitar cuentas
+        cuenta1.style.color = '#999';
+        cuenta1.style.cursor = 'not-allowed';
+        cuenta1.onclick = null;
+        
+        cuenta2.style.color = '#999';
+        cuenta2.style.cursor = 'not-allowed';
+        cuenta2.onclick = null;
+    }
+}
+
+// Inicializar estado al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    toggleCuentas();
+});
+</script>
+{% endblock %}
